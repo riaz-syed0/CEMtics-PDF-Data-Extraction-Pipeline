@@ -1,0 +1,50 @@
+# Prerequisites for Setting Up the Environment for the PDF Reader Code
+
+## System Requirements
+- Operating System: macOS, Windows, or Linux
+- Python Version: 3.13.5 (base)
+- Java Runtime Environment (Java): Version 24.0.1 
+- Tesseract OCR: Version 5.0 or higher
+
+## LLM Requirements
+The code uses the following LLMs via Ollama:
+- gemma3:1b (latest)
+- llava:latest (latest)
+
+## Steps to Set Up the Environment
+
+## 1. Install Python 3.13.5
+Ensure Python 3.13.5 is installed on your system. 
+
+## 2. Create a Conda Environment
+1. Install Conda if not already installed.
+2. Create a new Conda environment, (created in VS code studio)
+
+
+## 3. Install Java Runtime Environment (Java)
+Ensure Java version 24.0.1 is installed and added to your system's PATH. Verify installation:
+'java -version'
+
+## 4. Install Tesseract OCR
+Install Tesseract OCR version 5.0 or higher:
+
+Verify installation:
+'tesseract --version'
+
+## 5. Install Ollama and Required Models
+1. Install Ollama by following the instructions on the Ollama website
+
+2. Verify installation:
+   'ollama --version'
+
+3. Download the required models:
+   'ollama pull gemma3:1b
+   ollama pull llava:latest'
+
+# 6. Verify the Setup
+Run the following command to ensure all dependencies are installed correctly:
+'python -m pip list'
+
+# 7. Run the Code
+Execute the script:
+python pdf_reader.py  

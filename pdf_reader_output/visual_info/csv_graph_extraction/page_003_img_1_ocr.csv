@@ -1,0 +1,22 @@
+x,y,text
+,,Output
+,,Probabilities
+,,Add & Norm
+,,Feed
+,,Forward
+,,Add & Norm
+,,Multi- Head
+,,Attention
+,,Add & Norm
+,,Add & Norm
+,,Nx | (aad Norm
+,,Add & Norm Mock
+,,Multi- Head Multi-Head
+,,Attention Attention
+,,"SE a, tf"
+,,Positional Positional
+,,Encoding @ © © @ Encoding
+,,Input Output
+,,Embedding Embedding
+,,Inputs Outputs
+,,(shifted right)

@@ -1,0 +1,13 @@
+Summary for page_003_img_1.jpg
+====================
+The image shows a diagram explaining the architecture of a Transformer model,
+which is used in natural language processing tasks such as language translation
+and text generation.  The Transformer consists of two main components: an
+encoder and a decoder, each composed of a stack of N= 6 identical layers. Each
+layer has two sub-layers: a multi-head self-attention mechanism and a simple,
+position-wise fully connected feed-forward network. Residual connections and
+layer normalization are applied around each of the sub-layers in both the
+encoder and decoder stacks.  The diagram also shows that the output embeddings
+are offset by one position, to prevent positions from attending to subsequent
+positions in the decoder stack, ensuring that predictions for a given position
+depend only on the known outputs at positions less than i.

@@ -1,0 +1,26 @@
+Summary for page_004_img_1.jpg
+====================
+The image depicts two attention mechanisms used in neural networks: Scaled Dot-
+Product Attention and Multi-Head Attention. Both mechanisms aim to capture the
+relationships between queries, keys, and values in data representation and
+processing.  Scaled Dot-Product Attention involves computing the dot product of
+the query with all keys and dividing each result by the square root of dk, which
+represents the dimension of the key vectors. The softmax function is then
+applied to obtain weights on the values. This process is done in parallel for a
+set of queries, and the attention function is computed using matrices Q, K, and
+V. Dot-product attention is faster and more space-efficient than additive
+attention but may lose performance for large dk values.  Multi-Head Attention,
+on the other hand, linearly projects the queries, keys, and values h times with
+different learned linear projections to dk, dk, and dv dimensions, respectively.
+It then performs the attention function in parallel on each projected version of
+the queries, keys, and values. Multi-Head Attention is more versatile than
+Scaled Dot-Product Attention as it can capture complex relationships among data
+elements.  The text explains that while dot-product attention is similar to
+additive attention in theoretical complexity, dot-product attention outperforms
+additive attention for large dk values due to the scaling factor of 1√dk. This
+scaling helps counteract the effect of dot products growing large in magnitude
+and pushing the softmax function into regions with extremely small gradients.
+The main significance of these attention mechanisms is their ability to capture
+complex relationships among data elements, which is essential for processing and
+understanding structured data in various applications such as natural language
+processing and computer vision.
