@@ -1,34 +1,27 @@
 Summary for page_004_img_2.jpg
 ====================
-The image provides an overview of Scaled Dot-Product Attention and Multi-Head
-Attention in the context of machine learning, specifically in the field of
-natural language processing (NLP). These attention mechanisms are used to focus
-on specific parts of a sequence when processing text data.  Scaled Dot-Product
-Attention is shown on the left side of Figure 2. It works by computing the dot
-product of queries with keys and then dividing each result by the square root of
-the key dimension (dk). The resulting values are then normalized using a softmax
-function to obtain weights on the values. In practice, this operation is
-performed on sets of queries, keys, and values packed together into matrices Q,
-K, and V.  Multi-Head Attention, depicted on the right side of Figure 2,
-consists of several attention layers running in parallel. This means that
-instead of performing a single attention function with dmodel-dimensional keys,
-values, and queries, each set of queries, keys, and values is linearly projected
-h times with different learned linear projections to dk, dk, and dv dimensions,
-respectively. The attention function is then performed in parallel on these
-projected versions, yielding dv-dimensional outputs.  The text accompanying the
-image explains that dot-product attention is identical to Scaled Dot-Product
-Attention, except for the scaling factor of 1√dk. Additive attention, on the
-other hand, computes the compatibility function using a feed-forward network
-with a single hidden layer. While both mechanisms have similar theoretical
-complexity, dot-product attention is much faster and more space-efficient in
-practice due to its ability to be implemented using highly optimized matrix
-multiplication code.  The text also highlights that for small values of dk, the
-two attention mechanisms perform similarly. However, additive attention
-outperforms dot-product attention without scaling for larger values of dk
-because the dot products grow large in magnitude, pushing the softmax function
-into regions where it has extremely small gradients. To counteract this effect,
-dot-product attention scales the dot products by 1√dk.  In summary, the image
-and text provide an explanation of two key attention mechanisms in NLP - Scaled
-Dot-Product Attention and Multi-Head Attention. These mechanisms are essential
-components of modern NLP models, allowing them to focus on relevant parts of a
-sequence when processing language data.
+The image presents an explanation of Scaled Dot-Product Attention and Multi-Head
+Attention from a document titled "Multi-Head Attention". These attention
+mechanisms are used in natural language processing (NLP) for various tasks such
+as machine translation, text summarization, and language generation.  Scaled
+Dot-Product Attention is the focus of the first section of the image. This
+attention mechanism takes queries, keys, and values as input, computes the dot
+product of each query with all keys, divides each by √dk, applies a softmax
+function to obtain weights on the values, and finally multiplies the weights
+with the values to produce the output. The two most commonly used attention
+functions are additive attention and dot-product attention. Additive attention
+is slower and less space-efficient than dot-product attention in practice, but
+for small values of dk, they perform similarly. However, as the value of dk
+increases, dot-product attention outperforms additive attention without scaling.
+To counteract this effect, dot-product attention scales the dot products by
+1√dk.  The second section of the image discusses Multi-Head Attention. Instead
+of performing a single attention function with dmodel-dimensional keys, values,
+and queries, Multi-Head Attention linearly projects the queries, keys, and
+values h times with different, learned linear projections to dk, dk, and dv
+dimensions, respectively. On each projected version of queries, keys, and
+values, the attention function is then performed in parallel, yielding dv-
+dimensional outputs.  The summary of this graph or chart image is that Scaled
+Dot-Product Attention and Multi-Head Attention are important attention
+mechanisms used in NLP tasks. These mechanisms differ in their performance for
+small and large values of dk, and in the case of Multi-Head Attention, the
+number of linear projections performed in parallel.

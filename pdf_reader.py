@@ -36,14 +36,30 @@ def extract_text_to_json(pdf_path, output_path):
     print(f"Text saved to {output_path}")
 
 # Function to extract tables using Tabula
-def extract_tables_to_csv(pdf_path, output_path):
+def extract_tables_to_csv(pdf_path, tables_dir):
     print("Extracting tables using Tabula...")
     try:
         import tabula
-        tabula.convert_into(pdf_path, output_path, output_format="csv", pages="all")
-        print(f"Tables saved to {output_path}")
+        # Extract all tables from all pages as a list of DataFrames
+        tables = tabula.read_pdf(pdf_path, pages="all", multiple_tables=True)
+        
+        if not tables:
+            print("No tables found in the PDF.")
+            return []
+        
+        table_files = []
+        for idx, table_df in enumerate(tables, start=1):
+            if not table_df.empty:
+                table_file = os.path.join(tables_dir, f"table_{idx}.csv")
+                table_df.to_csv(table_file, index=False)
+                table_files.append(table_file)
+                print(f"Table {idx} saved to {table_file}")
+        
+        print(f"Total {len(table_files)} tables extracted and saved.")
+        return table_files
     except Exception as e:
         print(f"Failed to extract tables: {e}")
+        return []
 
 # Function to detect if an image is not blank
 def is_not_blank(image_path, min_std=1, min_entropy=0.5, min_nonuniform_ratio=0.001):
@@ -191,32 +207,51 @@ def analyze_images_with_full_page_context(images_dir, full_pages_dir, page_text_
         print(f"Failed to generate summaries for images with full-page context: {e}")
 
 # Function to summarize tables using Ollama
-def summarize_tables_with_ollama(tables_path, output_path):
-    print(f"Generating summary for {tables_path} using Ollama...")
+def summarize_tables_with_ollama(table_files, output_path):
+    print(f"Generating summaries for {len(table_files)} tables using Ollama...")
     try:
-        with open(tables_path, "r", encoding="utf-8") as f:
-            table_content = f.read()
-        prompt = (
-            "The following table data was extracted from a PDF:\n\n"
-            f"{table_content}\n\n"
-            "Please provide a detailed and well-structured technical summary of the key insights, trends, and significance of this data. Focus on analyzing the numerical performance of the models evaluated in the tables. Highlight specific metrics, such as accuracy, perplexity, and success rates, and discuss their implications. Identify patterns, anomalies, and key findings that are relevant to the context of the document. Avoid including any extra questions or prompts at the end."
-        )
-        cmd = ["ollama", "run", "gemma3:1b", prompt]
-        result = subprocess.run(cmd, capture_output=True, text=True, timeout=150)
-        if result.returncode == 0:
-            summary = result.stdout.strip()
-        else:
-            summary = f"[Error] {result.stderr.strip()}"
+        if not table_files:
+            print("No table files found; skipping summarization.")
+            with open(output_path, "w", encoding="utf-8") as f:
+                f.write("No tables were extracted from the PDF.\n")
+            return
 
-        # Format summary to 80 characters per line
-        formatted_summary = "\n".join(textwrap.wrap(summary, width=80))
+        # Write a single summary file with clear section titles and whitespace between sections
+        with open(output_path, "w", encoding="utf-8") as out:
+            for idx, table_file in enumerate(table_files, start=1):
+                # Read the individual table CSV file
+                with open(table_file, "r", encoding="utf-8") as f:
+                    table_content = f.read()
+                
+                prompt = (
+                    "The following table data was extracted from a PDF:\n\n"
+                    f"{table_content}\n\n"
+                    "Please provide a detailed and well-structured technical summary of the key "
+                    "insights, trends, and significance of this data. Focus on analyzing the "
+                    "numerical performance and metrics present (e.g., accuracy, perplexity, "
+                    "success rates). Identify patterns, anomalies, and key findings relevant to "
+                    "the context of the document. Avoid including any extra questions or prompts "
+                    "at the end."
+                )
+                cmd = ["ollama", "run", "gemma3:1b", prompt]
+                result = subprocess.run(cmd, capture_output=True, text=True, timeout=150)
+                if result.returncode == 0:
+                    summary = result.stdout.strip()
+                else:
+                    summary = f"[Error] {result.stderr.strip()}"
 
-        with open(output_path, "w", encoding="utf-8") as f:
-            f.write("Ollama Summary\n====================\n")
-            f.write(formatted_summary)
-        print(f"Summary for {tables_path} saved to {output_path}")
+                # Format summary to 80 characters per line
+                formatted_summary = "\n".join(textwrap.wrap(summary, width=80))
+
+                # Write titled section and ensure clear spacing between sections
+                out.write(f"Table {idx} Summary\n====================\n")
+                out.write(formatted_summary)
+                if idx < len(table_files):
+                    out.write("\n\n")  # blank line between summaries
+
+        print(f"Summaries saved to {output_path}")
     except Exception as e:
-        print(f"Failed to generate summary for {tables_path}: {e}")
+        print(f"Failed to generate summaries for tables: {e}")
 
 # Main execution
 def main():
@@ -243,12 +278,11 @@ def main():
     extract_text_to_json(pdf_file, text_output_path)
 
     # Extract tables
-    tables_output_path = os.path.join(tables_dir, "tables.csv")
-    extract_tables_to_csv(pdf_file, tables_output_path)
+    table_files = extract_tables_to_csv(pdf_file, tables_dir)
 
-    # Summarize tables
+    # Summarize tables (single summary file)
     tables_summary_path = os.path.join(tables_dir, "tables_summary.txt")
-    summarize_tables_with_ollama(tables_output_path, tables_summary_path)
+    summarize_tables_with_ollama(table_files, tables_summary_path)
 
     # Extract charts and graphs with full pages
     extract_charts_with_full_pages(pdf_file, visual_info_dir, full_pages_dir)

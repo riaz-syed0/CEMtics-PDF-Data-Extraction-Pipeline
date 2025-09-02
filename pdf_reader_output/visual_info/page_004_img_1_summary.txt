@@ -1,26 +1,29 @@
 Summary for page_004_img_1.jpg
 ====================
-The image depicts two attention mechanisms used in neural networks: Scaled Dot-
-Product Attention and Multi-Head Attention. Both mechanisms aim to capture the
-relationships between queries, keys, and values in data representation and
-processing.  Scaled Dot-Product Attention involves computing the dot product of
-the query with all keys and dividing each result by the square root of dk, which
-represents the dimension of the key vectors. The softmax function is then
-applied to obtain weights on the values. This process is done in parallel for a
-set of queries, and the attention function is computed using matrices Q, K, and
-V. Dot-product attention is faster and more space-efficient than additive
-attention but may lose performance for large dk values.  Multi-Head Attention,
-on the other hand, linearly projects the queries, keys, and values h times with
-different learned linear projections to dk, dk, and dv dimensions, respectively.
-It then performs the attention function in parallel on each projected version of
-the queries, keys, and values. Multi-Head Attention is more versatile than
-Scaled Dot-Product Attention as it can capture complex relationships among data
-elements.  The text explains that while dot-product attention is similar to
-additive attention in theoretical complexity, dot-product attention outperforms
-additive attention for large dk values due to the scaling factor of 1√dk. This
-scaling helps counteract the effect of dot products growing large in magnitude
-and pushing the softmax function into regions with extremely small gradients.
-The main significance of these attention mechanisms is their ability to capture
-complex relationships among data elements, which is essential for processing and
-understanding structured data in various applications such as natural language
-processing and computer vision.
+The image is a page from a document that discusses Scaled Dot-Product Attention
+(SDPA) and Multi-Head Attention (MHA). These attention mechanisms are used in
+neural networks, particularly in natural language processing tasks.  SDPA is an
+attention mechanism where the query vector's dot product with all key vectors is
+computed, and then scaled down by dividing by the square root of the dimension
+of the keys vector (dk) and applying a softmax function to obtain weights on the
+value vector (V). The final output is obtained by multiplying the weighted value
+vector with the transpose of the key matrix.  MHA is an extension of SDPA where
+the queries, keys, and values are linearly projected h times with different
+learned linear projections to dk, dk, and dv dimensions, respectively. The
+attention function is then performed on each projected version in parallel,
+yielding a dv-dimensional output vector.  The document mentions that dot-product
+attention is identical to SDPA, except for the scaling factor of 1√dk. Additive
+attention, on the other hand, computes the compatibility function using a feed-
+forward network with a single hidden layer. The two attention mechanisms have
+similar theoretical complexity, but dot-product attention is faster and more
+space-efficient in practice due to its ability to be implemented using highly
+optimized matrix multiplication code.  The document also notes that for small
+values of dk, the two mechanisms perform similarly, but additive attention
+outperforms dot product attention without scaling for larger values of dk. This
+is because the dot products grow large in magnitude, causing the softmax
+function to have extremely small gradients, which can be counteracted by scaling
+the dot products by 1√dk.  The image also contains a caption that states "Scaled
+Dot-Product Attention" on the left and "Multi-Head Attention" on the right. The
+left side of the image shows a graphical representation of SDPA, while the right
+side shows a similar representation for MHA, where the attention layers are
+running in parallel.

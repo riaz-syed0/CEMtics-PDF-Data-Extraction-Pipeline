@@ -1,0 +1,5 @@
+chose this function because we hypothesized it would allow the model to easily learn to attend by
+"relative positions, since for any fixed offset k, PEpos+k can be represented as a linear function of"
+PEpos.
+"We also experimented with using learned positional embeddings [9] instead, and found that the two"
+versions produced nearly identical results (see Table 3 row (E)). We chose the sinusoidal version

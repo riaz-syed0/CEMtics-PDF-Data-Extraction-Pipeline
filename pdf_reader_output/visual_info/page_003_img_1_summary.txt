@@ -1,13 +1,20 @@
 Summary for page_003_img_1.jpg
 ====================
-The image shows a diagram explaining the architecture of a Transformer model,
-which is used in natural language processing tasks such as language translation
-and text generation.  The Transformer consists of two main components: an
-encoder and a decoder, each composed of a stack of N= 6 identical layers. Each
-layer has two sub-layers: a multi-head self-attention mechanism and a simple,
-position-wise fully connected feed-forward network. Residual connections and
-layer normalization are applied around each of the sub-layers in both the
-encoder and decoder stacks.  The diagram also shows that the output embeddings
-are offset by one position, to prevent positions from attending to subsequent
-positions in the decoder stack, ensuring that predictions for a given position
-depend only on the known outputs at positions less than i.
+The image is a figure from a document that provides an overview of the
+Transformer model architecture used in natural language processing. The
+Transformer follows a specific structure, consisting of stacked self-attention
+mechanisms and point-wise fully connected layers for both the encoder and
+decoder.  The left half of the figure represents the encoder, which is composed
+of six identical layers. Each layer has two sub-layers. The first sub-layer
+implements a multi-head self-attention mechanism, while the second sub-layer is
+a simple, position-wise fully connected feed-forward network. Both sub-layers
+are surrounded by residual connections and layer normalization.  The right half
+of the figure illustrates the decoder, which also has six identical layers. In
+addition to the two sub-layers in each encoder layer, the decoder includes a
+third sub-layer that performs multi-head attention over the output of the
+encoder stack. Similar to the encoder, residual connections and layer
+normalization are employed around each of the sub-layers.  It is important to
+note that the Transformer architecture prevents positions from attending to
+subsequent positions in the decoder stack by modifying the self-attention sub-
+layer and using offset output embeddings. This ensures that predictions for a
+given position depend only on previously known outputs at positions less than i.
