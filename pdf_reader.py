@@ -51,7 +51,7 @@ def extract_tables_to_csv(pdf_path, tables_dir):
         for idx, table_df in enumerate(tables, start=1):
             if not table_df.empty:
                 table_file = os.path.join(tables_dir, f"table_{idx}.csv")
-                table_df.to_csv(table_file, index=False)
+                table_df.to_csv(table_file, index=False, encoding="utf-8")
                 table_files.append(table_file)
                 print(f"Table {idx} saved to {table_file}")
         
@@ -219,10 +219,8 @@ def summarize_tables_with_ollama(table_files, output_path):
         # Write a single summary file with clear section titles and whitespace between sections
         with open(output_path, "w", encoding="utf-8") as out:
             for idx, table_file in enumerate(table_files, start=1):
-                # Read the individual table CSV file
-                with open(table_file, "r", encoding="utf-8") as f:
-                    table_content = f.read()
-                
+                # Robustly read the individual table CSV file
+                table_content = robust_read(table_file)
                 prompt = (
                     "The following table data was extracted from a PDF:\n\n"
                     f"{table_content}\n\n"
@@ -252,6 +250,15 @@ def summarize_tables_with_ollama(table_files, output_path):
         print(f"Summaries saved to {output_path}")
     except Exception as e:
         print(f"Failed to generate summaries for tables: {e}")
+
+def robust_read(file_path):
+    """Try reading as utf-8, then cp1252 if utf-8 fails."""
+    try:
+        with open(file_path, "r", encoding="utf-8") as f:
+            return f.read()
+    except UnicodeDecodeError:
+        with open(file_path, "r", encoding="cp1252", errors="replace") as f:
+            return f.read()
 
 # Main execution
 def main():
