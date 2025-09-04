@@ -154,7 +154,7 @@ def extract_chart_data_from_images(images_dir):
             df = df[~((df["x"] == "") & (df["y"] == "") & (df["text"] == ""))]
             # Save to CSV named after the image, in the dedicated subfolder
             csv_out = os.path.join(csv_output_dir, os.path.splitext(image_file)[0] + "_ocr.csv")
-            df.to_csv(csv_out, index=False)
+            df.to_csv(csv_out, index=False, encoding="utf-8")
             print(f"Saved chart data to {csv_out}")
         except Exception as e:
             print(f"OCR failed for {image_file}: {e}")
@@ -187,7 +187,7 @@ def analyze_images_with_full_page_context(images_dir, full_pages_dir, page_text_
                     "Please provide a detailed and well-structured summary of the key insights, trends, and significance of the data presented in this chart or graph image. Use the full-page image and text as context to ensure accuracy. Avoid including any extra prompts or questions at the end."
                 )
                 cmd = ["ollama", "run", "llava:latest", prompt]
-                result = subprocess.run(cmd, capture_output=True, text=True, timeout=600)
+                result = subprocess.run(cmd, capture_output=True, text=True, timeout=600, encoding='utf-8', errors='replace')
                 if result.returncode == 0:
                     summary = result.stdout.strip()
                 else:
@@ -232,7 +232,7 @@ def summarize_tables_with_ollama(table_files, output_path):
                     "at the end."
                 )
                 cmd = ["ollama", "run", "gemma3:1b", prompt]
-                result = subprocess.run(cmd, capture_output=True, text=True, timeout=150)
+                result = subprocess.run(cmd, capture_output=True, text=True, timeout=150, encoding='utf-8', errors='replace')
                 if result.returncode == 0:
                     summary = result.stdout.strip()
                 else:
